@@ -29,6 +29,15 @@ struct ScreenView: View {
                 .tint(VoidColor.accent)
             }
 
+            LiveSection(title: "Параметры дисплея", api: "UIScreen.main · maximumFramesPerSecond") {
+                InfoRow(label: "Точки", value: screen.pointSize)
+                InfoRow(label: "Пиксели", value: screen.pixelSize)
+                InfoRow(label: "Масштаб", value: screen.scale)
+                InfoRow(label: "Частота обновления", value: screen.refreshRate)
+                InfoRow(label: "HDR / EDR", value: screen.hdr)
+                InfoRow(label: "Safe area", value: screen.safeArea)
+            }
+
             LiveSection(title: "Захват экрана", api: "UIScreen.main.isCaptured · userDidTakeScreenshot") {
                 InfoRow(label: "Идёт запись экрана", value: screen.isCaptured ? "Да" : "Нет")
                 InfoRow(label: "Последнее событие", value: screen.lastEvent)

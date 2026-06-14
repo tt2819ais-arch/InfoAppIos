@@ -11,6 +11,10 @@ struct PermissionsView: View {
     @State private var contacts = "—"
     @State private var calendar = "—"
     @State private var motion = "—"
+    @State private var reminders = "—"
+    @State private var tracking = "—"
+    @State private var speech = "—"
+    @State private var health = "—"
     @State private var bioResult = "—"
     @State private var notifResult = "Нажми, чтобы запланировать"
 
@@ -36,6 +40,18 @@ struct PermissionsView: View {
             }
             permissionRow("Движение/шаги", "CMMotionActivityManager", motion) {
                 perms.requestMotion { motion = $0 }
+            }
+            permissionRow("Напоминания", "EKEventStore.requestFullAccessToReminders", reminders) {
+                perms.requestReminders { reminders = $0 }
+            }
+            permissionRow("Распознавание речи", "SFSpeechRecognizer.requestAuthorization", speech) {
+                perms.requestSpeech { speech = $0 }
+            }
+            permissionRow("Отслеживание (ATT)", "ATTrackingManager.requestTrackingAuthorization", tracking) {
+                perms.requestTracking { tracking = $0 }
+            }
+            permissionRow("HealthKit", "HKHealthStore.requestAuthorization", health) {
+                perms.requestHealth { health = $0 }
             }
 
             LiveSection(title: "Биометрия", api: "LAContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics)") {
@@ -64,6 +80,10 @@ struct PermissionsView: View {
         contacts = perms.contactsStatus
         calendar = perms.calendarStatus
         motion = perms.motionStatus
+        reminders = perms.remindersStatus
+        tracking = perms.trackingStatus
+        speech = perms.speechStatus
+        health = perms.healthAvailable
         bioResult = BiometricsService.typeName()
     }
 

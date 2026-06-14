@@ -5,6 +5,9 @@ import Contacts
 import EventKit
 import CoreMotion
 import UserNotifications
+import AppTrackingTransparency
+import Speech
+import HealthKit
 
 // Authorization requests + status strings
 final class PermissionsService: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -85,6 +88,52 @@ final class PermissionsService: NSObject, ObservableObject, CLLocationManagerDel
     }
     var motionStatus: String { motionString(CMMotionActivityManager.authorizationStatus()) }
 
+    // MARK: Reminders
+    func requestReminders(_ done: @escaping (String) -> Void) {
+        let store = EKEventStore()
+        if #available(iOS 17.0, *) {
+            store.requestFullAccessToReminders { ok, _ in
+                DispatchQueue.main.async { done(ok ? "Разрешено" : "Отклонено") }
+            }
+        } else {
+            store.requestAccess(to: .reminder) { ok, _ in
+                DispatchQueue.main.async { done(ok ? "Разрешено" : "Отклонено") }
+            }
+        }
+    }
+    var remindersStatus: String { authString(EKEventStore.authorizationStatus(for: .reminder)) }
+
+    // MARK: App Tracking Transparency
+    func requestTracking(_ done: @escaping (String) -> Void) {
+        ATTrackingManager.requestTrackingAuthorization { st in
+            DispatchQueue.main.async { done(self.trackingString(st)) }
+        }
+    }
+    var trackingStatus: String { trackingString(ATTrackingManager.trackingAuthorizationStatus) }
+
+    // MARK: Speech recognition
+    func requestSpeech(_ done: @escaping (String) -> Void) {
+        SFSpeechRecognizer.requestAuthorization { st in
+            DispatchQueue.main.async { done(self.speechString(st)) }
+        }
+    }
+    var speechStatus: String { speechString(SFSpeechRecognizer.authorizationStatus()) }
+
+    // MARK: HealthKit (requires signing/entitlement)
+    var healthAvailable: String { HKHealthStore.isHealthDataAvailable() ? "Доступно (нужна подпись)" : "Недоступно" }
+    func requestHealth(_ done: @escaping (String) -> Void) {
+        guard HKHealthStore.isHealthDataAvailable() else { done("Недоступно"); return }
+        let store = HKHealthStore()
+        var types = Set<HKObjectType>()
+        if let steps = HKObjectType.quantityType(forIdentifier: .stepCount) { types.insert(steps) }
+        store.requestAuthorization(toShare: nil, read: types) { ok, err in
+            DispatchQueue.main.async {
+                if let err = err { done("Нужна подпись: \(err.localizedDescription)") }
+                else { done(ok ? "Запрос показан" : "Отклонено") }
+            }
+        }
+    }
+
     // MARK: Helpers
     private func authString(_ s: AVAuthorizationStatus) -> String {
         switch s {
@@ -135,6 +184,24 @@ final class PermissionsService: NSObject, ObservableObject, CLLocationManagerDel
         }
     }
     private func motionString(_ s: CMAuthorizationStatus) -> String {
+        switch s {
+        case .authorized: return "Разрешено"
+        case .denied: return "Запрещено"
+        case .restricted: return "Ограничено"
+        case .notDetermined: return "Не запрошено"
+        @unknown default: return "—"
+        }
+    }
+    private func trackingString(_ s: ATTrackingManager.AuthorizationStatus) -> String {
+        switch s {
+        case .authorized: return "Разрешено"
+        case .denied: return "Запрещено"
+        case .restricted: return "Ограничено"
+        case .notDetermined: return "Не запрошено"
+        @unknown default: return "—"
+        }
+    }
+    private func speechString(_ s: SFSpeechRecognizerAuthorizationStatus) -> String {
         switch s {
         case .authorized: return "Разрешено"
         case .denied: return "Запрещено"

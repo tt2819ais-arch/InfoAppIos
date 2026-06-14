@@ -1,7 +1,30 @@
 import UIKit
+import StoreKit
 
-// Clipboard, share sheet, settings, URL open
+// Clipboard, share sheet, settings, URL open, alternate icons, review
 enum MiscService {
+    static func requestReview() {
+        let scenes = UIApplication.shared.connectedScenes
+        if let scene = scenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            SKStoreReviewController.requestReview(in: scene)
+        }
+    }
+
+    static var supportsAlternateIcons: Bool { UIApplication.shared.supportsAlternateIcons }
+
+    static func setAlternateIcon(_ name: String?, completion: @escaping (String) -> Void) {
+        guard UIApplication.shared.supportsAlternateIcons else {
+            completion("Альтернативные иконки не поддерживаются"); return
+        }
+        UIApplication.shared.setAlternateIconName(name) { err in
+            DispatchQueue.main.async {
+                if let err = err { completion("Ошибка: \(err.localizedDescription)") }
+                else { completion(name == nil ? "Иконка сброшена на основную" : "Иконка изменена на «\(name!)»") }
+            }
+        }
+    }
+    static var currentAlternateIcon: String { UIApplication.shared.alternateIconName ?? "основная" }
+
     static func copy(_ text: String) {
         UIPasteboard.general.string = text
     }

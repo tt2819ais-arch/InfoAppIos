@@ -12,7 +12,7 @@ struct Capability: Identifiable {
 }
 
 enum LiveScreen: String, Identifiable {
-    case torch, screen, motion, device, network, permissions
+    case torch, screen, motion, device, network, location, connectivity, security, media, permissions
     var id: String { rawValue }
 }
 
@@ -27,4 +27,9 @@ struct CapabilityCategory: Identifiable {
     let subtitle: String
     let icon: String
     let kind: CategoryKind
+
+    var itemCount: Int? {
+        if case .actions(let caps) = kind { return caps.count }
+        return nil
+    }
 }

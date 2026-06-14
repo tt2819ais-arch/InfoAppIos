@@ -64,4 +64,65 @@ final class DeviceService: ObservableObject {
         let b = UIScreen.main.bounds
         return "\(Int(b.width))×\(Int(b.height)) pt @\(Int(UIScreen.main.scale))x"
     }
+
+    var nativeResolution: String {
+        let n = UIScreen.main.nativeBounds
+        return "\(Int(n.width))×\(Int(n.height)) px"
+    }
+
+    var refreshRate: String { "\(UIScreen.main.maximumFramesPerSecond) Гц" }
+
+    var hdr: String {
+        UIScreen.main.potentialEDRHeadroom > 1.0 ? "Поддерживается (HDR)" : "Стандартный (SDR)"
+    }
+
+    var idiom: String {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .phone: return "iPhone"
+        case .pad: return "iPad"
+        case .mac: return "Mac"
+        case .tv: return "TV"
+        case .carPlay: return "CarPlay"
+        case .vision: return "Vision"
+        default: return "—"
+        }
+    }
+
+    var locale: String { Locale.current.identifier }
+    var languageCode: String {
+        if #available(iOS 16.0, *) { return Locale.current.language.languageCode?.identifier ?? "—" }
+        return Locale.current.languageCode ?? "—"
+    }
+    var timezone: String { TimeZone.current.identifier }
+    var calendar: String { Calendar.current.identifier == .gregorian ? "Григорианский" : "\(Calendar.current.identifier)" }
+
+    var orientation: String {
+        switch UIDevice.current.orientation {
+        case .portrait: return "Портрет"
+        case .portraitUpsideDown: return "Портрет (перевёрнут)"
+        case .landscapeLeft: return "Ландшафт (влево)"
+        case .landscapeRight: return "Ландшафт (вправо)"
+        case .faceUp: return "Экраном вверх"
+        case .faceDown: return "Экраном вниз"
+        default: return "Неизвестно"
+        }
+    }
+
+    // Heuristic jailbreak detection — checks for common jailbreak artifacts
+    var jailbreak: String {
+        #if targetEnvironment(simulator)
+        return "Симулятор"
+        #else
+        let paths = ["/Applications/Cydia.app", "/Library/MobileSubstrate/MobileSubstrate.dylib",
+                     "/bin/bash", "/usr/sbin/sshd", "/etc/apt", "/private/var/lib/apt/"]
+        for p in paths where FileManager.default.fileExists(atPath: p) { return "Обнаружены признаки JB" }
+        // Try writing outside the sandbox
+        let test = "/private/void_jb_test.txt"
+        if (try? "x".write(toFile: test, atomically: true, encoding: .utf8)) != nil {
+            try? FileManager.default.removeItem(atPath: test)
+            return "Обнаружены признаки JB"
+        }
+        return "Не обнаружено"
+        #endif
+    }
 }

@@ -10,8 +10,27 @@ struct DeviceView: View {
             LiveSection(title: "Устройство", api: "UIDevice.current") {
                 InfoRow(label: "Имя", value: device.name)
                 InfoRow(label: "Модель", value: device.model)
+                InfoRow(label: "Тип", value: device.idiom)
                 InfoRow(label: "Система", value: "\(device.systemName) \(device.systemVersion)")
-                InfoRow(label: "Экран", value: device.screenSize)
+                InfoRow(label: "Ориентация", value: device.orientation)
+            }
+
+            LiveSection(title: "Дисплей", api: "UIScreen.main") {
+                InfoRow(label: "Точки", value: device.screenSize)
+                InfoRow(label: "Пиксели", value: device.nativeResolution)
+                InfoRow(label: "Частота", value: device.refreshRate)
+                InfoRow(label: "HDR", value: device.hdr)
+            }
+
+            LiveSection(title: "Регион", api: "Locale · TimeZone · Calendar") {
+                InfoRow(label: "Локаль", value: device.locale)
+                InfoRow(label: "Язык", value: device.languageCode)
+                InfoRow(label: "Часовой пояс", value: device.timezone)
+                InfoRow(label: "Календарь", value: device.calendar)
+            }
+
+            LiveSection(title: "Безопасность", api: "FileManager · sandbox heuristic") {
+                InfoRow(label: "Jailbreak", value: device.jailbreak)
             }
 
             LiveSection(title: "Батарея", api: "UIDevice.batteryLevel · batteryState") {
@@ -41,8 +60,12 @@ struct DeviceView: View {
         }
         .onAppear {
             device.enableBatteryMonitoring()
+            UIDevice.current.beginGeneratingDeviceOrientationNotifications()
             timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in device.refresh() }
         }
-        .onDisappear { timer?.invalidate() }
+        .onDisappear {
+            timer?.invalidate()
+            UIDevice.current.endGeneratingDeviceOrientationNotifications()
+        }
     }
 }

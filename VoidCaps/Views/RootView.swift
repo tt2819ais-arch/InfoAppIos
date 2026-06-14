@@ -74,6 +74,10 @@ struct RootView: View {
         case .motion: MotionView(title: title)
         case .device: DeviceView(title: title)
         case .network: NetworkView(title: title)
+        case .location: LocationView(title: title)
+        case .connectivity: ConnectivityView(title: title)
+        case .security: SecurityView(title: title)
+        case .media: MediaView(title: title)
         case .permissions: PermissionsView(title: title)
         }
     }
@@ -101,6 +105,13 @@ struct CategoryCard: View {
                         .foregroundColor(VoidColor.textSecondary)
                 }
                 Spacer()
+                if let n = category.itemCount {
+                    Text("\(n)")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(VoidColor.accent)
+                        .padding(.horizontal, 8).padding(.vertical, 3)
+                        .background(Capsule().fill(VoidColor.accentSoft))
+                }
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(VoidColor.textTertiary)

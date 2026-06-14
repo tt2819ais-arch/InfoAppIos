@@ -44,6 +44,21 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>AltIconLight</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>AltIconLight</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+		</dict>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Демонстрация запроса доступа к камере.</string>
 	<key>NSMicrophoneUsageDescription</key>
@@ -60,5 +75,27 @@
 	<string>Демонстрация доступа к датчикам движения и шагомеру.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Демонстрация аутентификации через Face ID.</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Демонстрация запроса полного доступа к календарю.</string>
+	<key>NSRemindersFullAccessUsageDescription</key>
+	<string>Демонстрация запроса доступа к напоминаниям.</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Демонстрация запроса доступа к напоминаниям.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Демонстрация состояния Bluetooth.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Демонстрация состояния Bluetooth.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Демонстрация запроса доступа к геопозиции.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Демонстрация запроса разрешения на отслеживание (ATT).</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Демонстрация доступа к данным здоровья (требует подписи/entitlement).</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Демонстрация записи данных здоровья (требует подписи/entitlement).</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>Демонстрация доступности NFC (требует подписи/entitlement).</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Демонстрация запроса распознавания речи.</string>
 </dict>
 </plist>

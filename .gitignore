@@ -1,0 +1,10 @@
+## Xcode / build
+VoidCaps.xcodeproj/
+build/
+DerivedData/
+Payload/
+*.ipa
+*.xcuserstate
+.DS_Store
+xcuserdata/
+*.swiftpm

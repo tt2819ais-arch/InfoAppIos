@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>ru</string>
+	<key>CFBundleDisplayName</key>
+	<string>void</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>VoidCaps</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>MinimumOSVersion</key>
+	<string>16.0</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string></string>
+	</dict>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Демонстрация запроса доступа к камере.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Демонстрация запроса доступа к микрофону.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Демонстрация запроса доступа к фотогалерее.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Демонстрация запроса доступа к геопозиции.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Демонстрация запроса доступа к контактам.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Демонстрация запроса доступа к календарю.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Демонстрация доступа к датчикам движения и шагомеру.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Демонстрация аутентификации через Face ID.</string>
+</dict>
+</plist>
